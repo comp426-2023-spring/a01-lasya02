@@ -25,12 +25,24 @@ console.log(port);
 // The function must read a file located at `./public/index.html` and do some stuff with it.
 // The stuff that should be inside this function is all below.
 
-var dataIntake = fs.readFile('./public/index.html', 'utf8', (err, data) => {
+fs.readFile('./public/index.html', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
   }
-  //console.log(data);
+  console.log(data);
+
+  const server = http.createServer((req, res) => {
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/html')
+    res.end(data)
+  })
+
+  server.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
+  })
+
+});
 
 
 // If there is an error, put it on the console error and return. 
@@ -43,19 +55,11 @@ var dataIntake = fs.readFile('./public/index.html', 'utf8', (err, data) => {
 // 1. status code 200, 
 // 2. set a header with content type `text/html`, and 
 // 3. end with the data that you are reading in from ./public/index.html.
-const server = http.createServer((req, res) => {
-    res.statusCode = 200
-    res.setHeader('Content-Type', 'text/html')
-    res.end(dataIntake)
-  })
+
 
 
 // Start the `server` const listening on the port defined by argument in your `port` const. 
 // Put the exact message `Server listening on port ${port}` on the console log. 
 
-server.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
-  })
 
-});
 // That's it! You're all done!
